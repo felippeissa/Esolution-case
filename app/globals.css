@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* Design tokens (README do handoff) */
+@theme {
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --color-brand: #3758f9;
+  --color-brand-hover: #1b44c8;
+  --color-brand-soft: #8ea2ff;
+  --color-brand-50: #f4f7ff;
+  --color-brand-100: #eef2ff;
+  --color-brand-150: #e7ecfb;
+  --color-brand-200: #dce3fe;
+  --color-brand-250: #e0e7ff;
+  --color-brand-300: #c7d2fe;
+
+  --color-ink: #111928;
+  --color-ink-strong: #1f2a37;
+  --color-ink-body: #374151;
+  --color-ink-muted: #637381;
+  --color-ink-subtle: #8899a8;
+  --color-ink-brand-name: #9aa6b6;
+
+  --color-night: #111928;
+  --color-night-card: #1c2536;
+  --color-night-line: #2a3548;
+  --color-night-text: #a8b3c4;
+  --color-night-text-2: #d1d7e0;
+
+  --color-line: #eef0f4;
+  --color-line-2: #e5e7eb;
+  --color-line-input: #dfe4ea;
+  --color-line-3: #f1f2f4;
+  --color-neutral-50: #f9fafb;
+
+  --color-danger: #e5484d;
+  --color-danger-soft: #feecec;
+  --color-success: #22ad5c;
+  --color-success-soft: #e8f8ef;
+
+  --shadow-cta: 0 10px 24px -8px rgb(55 88 249 / 0.55);
+  --shadow-panel: 0 20px 50px -30px rgb(17 25 40 / 0.25);
+  --shadow-card-hover: 0 20px 40px -24px rgb(55 88 249 / 0.35);
+  --shadow-float: 0 18px 40px -14px rgb(17 25 40 / 0.3);
+  --shadow-faq: 0 8px 24px -18px rgb(17 25 40 / 0.25);
+  --shadow-form: 0 30px 60px -25px rgb(10 20 80 / 0.5);
+
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-float-up: float-up 4.2s ease-in-out 0.9s infinite;
+  --animate-float-down: float-down 5.1s ease-in-out 0.9s infinite;
+  --animate-panel-in: panel-in 450ms var(--ease-out-soft) backwards;
+  --animate-faq-in: faq-in 350ms var(--ease-out-soft);
+  --animate-pop-in: pop-in 500ms var(--ease-out-soft);
+
+  --animate-marquee: marquee 45s linear infinite;
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float-up {
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes float-down {
+    50% { transform: translateY(10px); }
+  }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateX(14px); }
+  }
+  @keyframes faq-in {
+    from { opacity: 0; transform: translateY(-6px); }
+  }
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.94); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px; /* altura do header sticky */
+  }
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--color-brand);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-brand-hover);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+}
+
+@layer components {
+  .container-page {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1200px;
+    padding-inline: 1.5rem;
+  }
+  .section-y {
+    padding-block: 110px;
+  }
+  .eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-brand);
+  }
+  .h2 {
+    font-size: clamp(30px, 3.4vw, 42px);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--color-brand);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.15s;
+  }
+  .btn-primary:hover {
+    background: var(--color-brand-hover);
+    color: #fff;
+  }
+  .field {
+    padding: 12px 14px;
+    border: 1px solid var(--color-line-input);
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fff;
+  }
+}
+
+/* Reveal no scroll: estado controlado por data-attributes (ver components/ui/Reveal.tsx) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 24px));
+  transition:
+    opacity 0.8s var(--ease-out-soft) var(--reveal-delay, 0ms),
+    transform 0.9s var(--ease-out-soft) var(--reveal-delay, 0ms);
+}
+[data-reveal][data-scale] {
+  transform: scale(0.96);
+}
+[data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
